@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/translation-with-type-full/parser/tree-sitter-c-sharp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/translation-with-type-full/parser/tree-sitter-go" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/translation-with-type-full/parser/tree-sitter-java" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/translation-with-type-full/parser/tree-sitter-javascript" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/translation-with-type-full/parser/tree-sitter-php" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/translation-with-type-full/parser/tree-sitter-python" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/translation-with-type-full/parser/tree-sitter-ruby" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/translation-with-type/parser/tree-sitter-c-sharp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/translation-with-type/parser/tree-sitter-go" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/translation-with-type/parser/tree-sitter-java" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/translation-with-type/parser/tree-sitter-javascript" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/translation-with-type/parser/tree-sitter-php" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/translation-with-type/parser/tree-sitter-python" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/translation-with-type/parser/tree-sitter-ruby" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/translation/parser/tree-sitter-c-sharp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/translation/parser/tree-sitter-go" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/translation/parser/tree-sitter-java" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/translation/parser/tree-sitter-javascript" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/translation/parser/tree-sitter-php" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/translation/parser/tree-sitter-python" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/translation/parser/tree-sitter-ruby" vcs="Git" />
+  </component>
+</project>

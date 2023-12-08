@@ -1,0 +1,20 @@
+12/07/2023 15:16:23 - INFO - __main__ -   Namespace(model_type='roberta', model_name_or_path='microsoft/graphcodebert-base', output_dir='saved_models/java-cs/', load_model_path='saved_models/java-cs//checkpoint-best-bleu/pytorch_model.bin', train_filename=None, dev_filename='data/valid.java-cs.txt.java,data/valid.java-cs.txt.cs', test_filename='data/test.java-cs.txt.java,data/test.java-cs.txt.cs', source_lang='java', config_name='microsoft/graphcodebert-base', tokenizer_name='microsoft/graphcodebert-base', max_source_length=320, max_target_length=256, do_train=False, do_eval=False, do_test=True, do_lower_case=False, no_cuda=False, train_batch_size=8, eval_batch_size=64, gradient_accumulation_steps=1, learning_rate=5e-05, beam_size=10, weight_decay=0.0, adam_epsilon=1e-08, max_grad_norm=1.0, num_train_epochs=3, max_steps=-1, eval_steps=-1, train_steps=-1, warmup_steps=0, local_rank=-1, seed=42)
+Some weights of RobertaModel were not initialized from the model checkpoint at microsoft/graphcodebert-base and are newly initialized: ['roberta.pooler.dense.bias', 'roberta.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+12/07/2023 15:16:26 - INFO - __main__ -   reload model from saved_models/java-cs//checkpoint-best-bleu/pytorch_model.bin
+Traceback (most recent call last):
+  File "/Users/choeminseok/dl-project-active/CodeBERT/GraphCodeBERT/translation/run.py", line 629, in <module>
+    main()
+  File "/Users/choeminseok/dl-project-active/CodeBERT/GraphCodeBERT/translation/run.py", line 409, in main
+    model.load_state_dict(torch.load(args.load_model_path))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/anaconda3/envs/latest/lib/python3.11/site-packages/torch/serialization.py", line 986, in load
+    with _open_file_like(f, 'rb') as opened_file:
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/anaconda3/envs/latest/lib/python3.11/site-packages/torch/serialization.py", line 435, in _open_file_like
+    return _open_file(name_or_buffer, mode)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/anaconda3/envs/latest/lib/python3.11/site-packages/torch/serialization.py", line 416, in __init__
+    super().__init__(open(name, mode))
+                     ^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'saved_models/java-cs//checkpoint-best-bleu/pytorch_model.bin'
