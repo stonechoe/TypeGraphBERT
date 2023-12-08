@@ -431,8 +431,9 @@ def main(main_args = None):
     # print arguments
     args = parser.parse_args(main_args) if (main_args) else parser.parse_args()
 
-    logger_file_name = "train" if args.do_train else "test"
-    logging.basicConfig(filename=f"{args.output_dir}/{logger_file_name}.log", level=logging.WARNING)
+    logger_file_name = os.path.join(args.output_dir, "train.log" if args.do_train else "test.log")
+    file_handler = logging.FileHandler(logger_file_name)
+    logger.addHandler(file_handler)
 
     logger.info(args)
 
