@@ -272,6 +272,19 @@ def convert_examples_to_features(examples, tokenizer, args, stage=None):
 
 
 def identify_type_notations(code_tokens, lang):
+    def is_type_notation(token, lang, one_before_token=None):
+        # Example implementation for a specific language
+        # This needs to be adapted based on how type notations are represented in your data
+        if one_before_token is None:
+            return False
+        if lang == 'java' or lang == 'c_sharp' or lang == 'cs':
+            # Simple heuristic for Java/C# like languages
+            # Check if the token matches common data types or custom rules for type notations
+            return ((not one_before_token.istitle()) and token.istitle()) or (token in ['int', 'char', 'long', 'short',
+                                                                                        'byte', 'float', 'boolean',
+                                                                                        'string'])
+        return False
+
     type_notation_positions = []
     # Implement logic to identify type notations based on the language specifics
     # For example, in a simple case for a language like Java or C#:
@@ -281,20 +294,6 @@ def identify_type_notations(code_tokens, lang):
                                           code_tokens[idx - 1]):  # 'is_type_notation' is a hypothetical function
             type_notation_positions.append(idx)
     return type_notation_positions
-
-
-def is_type_notation(token, lang, one_before_token=None):
-    # Example implementation for a specific language
-    # This needs to be adapted based on how type notations are represented in your data
-    if one_before_token is None:
-        return False
-    if lang == 'java' or lang == 'c_sharp' or lang == 'cs':
-        # Simple heuristic for Java/C# like languages
-        # Check if the token matches common data types or custom rules for type notations
-        return ((not one_before_token.istitle()) and token.istitle()) or (token in ['int', 'char', 'long', 'short',
-                                                                                    'byte', 'float', 'boolean',
-                                                                                    'string'])
-    return False
 
 
 class TextDataset(Dataset):
