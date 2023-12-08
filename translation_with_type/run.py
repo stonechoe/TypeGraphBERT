@@ -158,6 +158,7 @@ class InputFeatures(object):
                  target_ids,
                  source_mask,
                  target_mask,
+                 type_notation_positions,
 
     ):
         self.example_id = example_id
@@ -167,7 +168,8 @@ class InputFeatures(object):
         self.dfg_to_dfg = dfg_to_dfg
         self.target_ids = target_ids
         self.source_mask = source_mask
-        self.target_mask = target_mask       
+        self.target_mask = target_mask
+        self.type_notation_positions = type_notation_positions
         
 
 parsers={}        
@@ -205,7 +207,10 @@ def convert_examples_to_features(examples, tokenizer, args,stage=None):
         position_idx+=[tokenizer.pad_token_id]*padding_length
         source_ids+=[tokenizer.pad_token_id]*padding_length      
         source_mask = [1] * (len(source_tokens))
-        source_mask+=[0]*padding_length        
+        source_mask+=[0]*padding_length
+
+        type_notation_positions = identify_type_notations(code_tokens, examples.lang)
+
         
         #reindex
         reverse_index={}
@@ -255,6 +260,7 @@ def convert_examples_to_features(examples, tokenizer, args,stage=None):
                  target_ids,
                  source_mask,
                  target_mask,
+                 type_notation_positions,
             )
         )
     return features
@@ -276,7 +282,7 @@ def is_type_notation(token, lang, one_before_token=None):
     # This needs to be adapted based on how type notations are represented in your data
     if one_before_token is None:
         return False
-    if lang == 'java' or lang == 'c_sharp':
+    if lang == 'java' or lang == 'c_sharp' or lang == 'cs':
         # Simple heuristic for Java/C# like languages
         # Check if the token matches common data types or custom rules for type notations
         return ((not one_before_token.istitle()) and token.istitle()) or (token in ['int', 'char', 'long', 'short',
@@ -314,13 +320,8 @@ class TextDataset(Dataset):
                 if a+node_index<len(self.examples[item].position_idx):
                     attn_mask[idx+node_index,a+node_index]=True
 
-        # Identify type notations
-        code, _ = extract_dataflow(self.examples[item].source, self.parsers[self.examples[item].lang],
-                                   self.examples[item].lang)
-        type_notation_positions = identify_type_notations(code, self.examples[item].lang)
-
         # Update attention mask for type notations
-        for pos in type_notation_positions:
+        for pos in self.examples[item].type_notation_positions:
             if pos + 1 < self.args.max_source_length:
                 attn_mask[pos, pos + 1] = True
                 attn_mask[pos + 1, pos] = True
