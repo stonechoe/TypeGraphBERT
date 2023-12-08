@@ -328,7 +328,7 @@ class TextDataset(Dataset):
                     attn_mask[idx + node_index, a + node_index] = True
 
         for pos in self.examples[item].type_notation_positions:
-            if pos + 1 < len(self.examples[item].position_idx):
+            if (pos + 1) < len(self.examples[item].position_idx):
                 attn_mask[pos, pos + 1] = True
                 attn_mask[pos + 1, pos] = True
 
@@ -353,7 +353,7 @@ def set_seed(seed=42):
     torch.backends.cudnn.deterministic = True
 
 
-def main(main_args):
+def main(main_args = None):
     print("main is called!")
     parser = argparse.ArgumentParser()
 

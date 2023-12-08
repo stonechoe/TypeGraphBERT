@@ -161,6 +161,7 @@ class InputFeatures(object):
                  target_ids,
                  source_mask,
                  target_mask,
+                 type_notation_positions,
 
                  ):
         self.example_id = example_id
@@ -171,6 +172,7 @@ class InputFeatures(object):
         self.target_ids = target_ids
         self.source_mask = source_mask
         self.target_mask = target_mask
+        self.type_notation_positions = type_notation_positions
 
 
 parsers = {}
@@ -181,6 +183,30 @@ for lang in dfg_function:
     parser = [parser, dfg_function[lang]]
     parsers[lang] = parser
 
+
+def identify_type_notations(code_tokens, lang):
+    def is_type_notation(token, lang, one_before_token=None):
+        # Example implementation for a specific language
+        # This needs to be adapted based on how type notations are represented in your data
+        if one_before_token is None:
+            return False
+        if lang == 'java' or lang == 'c_sharp' or lang == 'cs':
+            # Simple heuristic for Java/C# like languages
+            # Check if the token matches common data types or custom rules for type notations
+            return ((not one_before_token.istitle()) and token.istitle()) or (token in ['int', 'char', 'long', 'short',
+                                                                                        'byte', 'float', 'boolean',
+                                                                                        'string'])
+        return False
+
+    type_notation_positions = []
+    # Implement logic to identify type notations based on the language specifics
+    # For example, in a simple case for a language like Java or C#:
+    # You might look for patterns like variable declarations where type is specified
+    for idx, token in enumerate(code_tokens):
+        if (idx > 0) and is_type_notation(token, lang,
+                                          code_tokens[idx - 1]):  # 'is_type_notation' is a hypothetical function
+            type_notation_positions.append(idx)
+    return type_notation_positions
 
 def convert_examples_to_features(examples, tokenizer, args, stage=None):
     features = []
@@ -211,6 +237,10 @@ def convert_examples_to_features(examples, tokenizer, args, stage=None):
         source_ids += [tokenizer.pad_token_id] * padding_length
         source_mask = [1] * (len(source_tokens))
         source_mask += [0] * padding_length
+
+        type_notation_positions = identify_type_notations(code_tokens, args.source_lang)
+
+
 
         # reindex
         reverse_index = {}
@@ -259,6 +289,8 @@ def convert_examples_to_features(examples, tokenizer, args, stage=None):
                 target_ids,
                 source_mask,
                 target_mask,
+                type_notation_positions,
+
             )
         )
     return features
@@ -295,6 +327,15 @@ class TextDataset(Dataset):
                 if a + node_index < len(self.examples[item].position_idx):
                     attn_mask[idx + node_index, a + node_index] = True
 
+        for pos in self.examples[item].type_notation_positions:
+            if (pos + 1) < len(self.examples[item].position_idx):
+                attn_mask[pos, pos + 1] = True
+                attn_mask[pos + 1, pos] = True
+
+            # # attn_mask[pos, :] = True  # Focus attention from type notation to all tokens
+            # # attn_mask[:, pos] = True  # Focus attention from all tokens to type notation
+
+
         return (torch.tensor(self.examples[item].source_ids),
                 torch.tensor(self.examples[item].source_mask),
                 torch.tensor(self.examples[item].position_idx),
@@ -312,7 +353,7 @@ def set_seed(seed=42):
     torch.backends.cudnn.deterministic = True
 
 
-def main(main_args):
+def main(main_args = None):
     print("main is called!")
     parser = argparse.ArgumentParser()
 
